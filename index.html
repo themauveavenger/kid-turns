@@ -2,19 +2,37 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Kid Picker</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <title>Turn Order</title>
 </head>
-<script>
+<script type="text/javascript">
   const kids = ["Terra", "Rose", "Iris"];
   let turnLengthSeconds = 60 * 10; // default is 10 minutes
 
   /* type {number} */
   let timer;
 
+  function setupTurnOrderButtons() {
+    // add event listeners for the turn order buttons
+    const turnOrderButtons = document.getElementsByClassName("btnTurnOrder");
+    for (let i = 0; i < turnOrderButtons.length; i++) {
+      turnOrderButtons[i].addEventListener("click", (e) => {
+        const btn = e.target;
+        document.getElementById("turnOrder").innerHTML = btn.innerHTML;
+        const kids = btn.innerHTML.split(", ");
+        document.getElementById("kid").innerHTML = kids[0];
+        document.getElementById("seconds").innerHTML = turnLengthSeconds.toString();
+      });
+    }
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     // start the timer when page is loaded
     document.getElementById("seconds").innerHTML = turnLengthSeconds.toString();
     startTimer();
+
+    setupTurnOrderButtons();
   });
 
   function setKid() {
@@ -72,12 +90,13 @@
     if (timer) {
       clearInterval(timer);
       timer = null;
-      document.getElementById("pauseButton").innerHTML = "Unpause";
+      document.getElementById("pauseButton").innerHTML = "\u23F5 Unpause";
     } else {
       startTimer();
-      document.getElementById("pauseButton").innerHTML = "Pause";
+      document.getElementById("pauseButton").innerHTML = "\u23F8 Pause";
     }
   }
+
 </script>
 
 <style>
@@ -119,10 +138,23 @@
   .red {
     color: red;
   }
+
+  .green {
+    color: darkgreen;
+  }
 </style>
 
 <body>
 <div class="container">
+  <h1>Turn Order: <span class="green" id="turnOrder">Terra, Rose, Iris</span></h1>
+
+  <button class="btnTurnOrder">Rose, Iris, Terra</button>
+  <button class="btnTurnOrder">Rose, Terra, Iris</button>
+  <button class="btnTurnOrder">Iris, Rose, Terra</button>
+  <button class="btnTurnOrder">Iris, Terra, Rose</button>
+  <button class="btnTurnOrder">Terra, Iris, Rose</button>
+  <button class="btnTurnOrder">Terra, Rose, Iris</button>
+
   <h1>Current Turn: <span class="blue" id="kid">Terra</span></h1>
   <h1>Next turn in: <span class="red" id="seconds"></span> seconds.</h1>
 
@@ -131,13 +163,16 @@
   <button onclick="changeTurn('Terra')">Terra</button>
   <button onclick="changeTurn('Iris')">Iris</button>
 
-  <button id="pauseButton" onclick="pause()">Pause</button>
+  <button id="pauseButton" onclick="pause()">&#x23F8 Pause</button>
 
-  <h2>Turn Length</h2>
+  <h2>Turn Length &#x1F552</h2>
   <button onclick="setTurnLength(60 * 5)">5 Minutes</button>
   <button onclick="setTurnLength(60 * 10)">10 Minutes</button>
   <button onclick="setTurnLength(60 * 15)">15 Minutes</button>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
 </body>
 </html>
