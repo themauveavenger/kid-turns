@@ -5,147 +5,104 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Young+Serif">
+  <link rel="stylesheet" href="styles.css">
   <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+
+  <script type="text/javascript">
+    const kids = ["Terra", "Rose", "Iris"];
+    let turnLengthSeconds = 60 * 10; // default is 10 minutes
+
+    /* type {number} */
+    let timer;
+
+    function setupTurnOrderButtons() {
+      // add event listeners for the turn order buttons
+      const turnOrderButtons = document.getElementsByClassName("btnTurnOrder");
+      for (let i = 0; i < turnOrderButtons.length; i++) {
+        turnOrderButtons[i].addEventListener("click", (e) => {
+          const btn = e.target;
+          document.getElementById("turnOrder").innerHTML = btn.innerHTML;
+          const kids = btn.innerHTML.split(", ");
+          document.getElementById("kid").innerHTML = kids[0];
+          document.getElementById("seconds").innerHTML = turnLengthSeconds.toString();
+        });
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // start the timer when page is loaded
+      document.getElementById("seconds").innerHTML = turnLengthSeconds.toString();
+      startTimer();
+
+      setupTurnOrderButtons();
+    });
+
+    function setKid() {
+      // get the current kid
+      const currentKid = document.getElementById("kid").innerHTML;
+      // find the index of the current kid
+      const currentIndex = kids.indexOf(currentKid);
+      if (currentIndex === kids.length - 1) {
+        // if the current kid is the last kid, display the first kid
+        document.getElementById("kid").innerHTML = kids[0];
+      } else {
+        // otherwise, display the next kid
+        document.getElementById("kid").innerHTML = kids[currentIndex + 1];
+      }
+    }
+
+    function startTimer() {
+      // every second, count down by 1 second.
+      timer = setInterval(() => {
+        // get the current number of seconds
+        const currentSeconds = document.getElementById("seconds").innerHTML;
+        // if the current number of seconds is 0, display 10 minutes
+        if (currentSeconds === "0") {
+          document.getElementById("seconds").innerHTML = turnLengthSeconds.toString();
+          setKid();
+        } else {
+          // otherwise, display the current number of seconds minus 1
+          document.getElementById("seconds").innerHTML = (parseInt(currentSeconds) - 1).toString();
+        }
+      }, 1000);
+    }
+
+    /**
+     * Change the turn to the given kid
+     * @param {string} kid
+     */
+    function changeTurn(kid) {
+      document.getElementById("kid").innerHTML = kid;
+      document.getElementById("seconds").innerHTML = turnLengthSeconds.toString();
+    }
+
+    /**
+     * sets the turn length & resets the timer to the new turn length
+     * @param {number} len - the length of the turn in seconds
+     */
+    function setTurnLength(len) {
+      turnLengthSeconds = len;
+      document.getElementById("seconds").innerHTML = turnLengthSeconds.toString();
+    }
+
+    /**
+     * Pauses or unpauses the timer.
+     */
+    function pause() {
+      if (timer) {
+        clearInterval(timer);
+        timer = null;
+        document.getElementById("pauseButton").innerHTML = "\u23F5 Unpause";
+      } else {
+        startTimer();
+        document.getElementById("pauseButton").innerHTML = "\u23F8 Pause";
+      }
+    }
+
+  </script>
+
   <title>Turn Order</title>
 </head>
-<script type="text/javascript">
-  const kids = ["Terra", "Rose", "Iris"];
-  let turnLengthSeconds = 60 * 10; // default is 10 minutes
-
-  /* type {number} */
-  let timer;
-
-  function setupTurnOrderButtons() {
-    // add event listeners for the turn order buttons
-    const turnOrderButtons = document.getElementsByClassName("btnTurnOrder");
-    for (let i = 0; i < turnOrderButtons.length; i++) {
-      turnOrderButtons[i].addEventListener("click", (e) => {
-        const btn = e.target;
-        document.getElementById("turnOrder").innerHTML = btn.innerHTML;
-        const kids = btn.innerHTML.split(", ");
-        document.getElementById("kid").innerHTML = kids[0];
-        document.getElementById("seconds").innerHTML = turnLengthSeconds.toString();
-      });
-    }
-  }
-
-  document.addEventListener("DOMContentLoaded", () => {
-    // start the timer when page is loaded
-    document.getElementById("seconds").innerHTML = turnLengthSeconds.toString();
-    startTimer();
-
-    setupTurnOrderButtons();
-  });
-
-  function setKid() {
-    // get the current kid
-    const currentKid = document.getElementById("kid").innerHTML;
-    // find the index of the current kid
-    const currentIndex = kids.indexOf(currentKid);
-    if (currentIndex === kids.length - 1) {
-      // if the current kid is the last kid, display the first kid
-      document.getElementById("kid").innerHTML = kids[0];
-    } else {
-      // otherwise, display the next kid
-      document.getElementById("kid").innerHTML = kids[currentIndex + 1];
-    }
-  }
-
-  function startTimer() {
-    // every second, count down by 1 second.
-    timer = setInterval(() => {
-      // get the current number of seconds
-      const currentSeconds = document.getElementById("seconds").innerHTML;
-      // if the current number of seconds is 0, display 10 minutes
-      if (currentSeconds === "0") {
-        document.getElementById("seconds").innerHTML = turnLengthSeconds.toString();
-        setKid();
-      } else {
-        // otherwise, display the current number of seconds minus 1
-        document.getElementById("seconds").innerHTML = (parseInt(currentSeconds) - 1).toString();
-      }
-    }, 1000);
-  }
-
-  /**
-   * Change the turn to the given kid
-   * @param {string} kid
-   */
-  function changeTurn(kid) {
-    document.getElementById("kid").innerHTML = kid;
-    document.getElementById("seconds").innerHTML = turnLengthSeconds.toString();
-  }
-
-  /**
-   * sets the turn length & resets the timer to the new turn length
-   * @param {number} len - the length of the turn in seconds
-   */
-  function setTurnLength(len) {
-    turnLengthSeconds = len;
-    document.getElementById("seconds").innerHTML = turnLengthSeconds.toString();
-  }
-
-  /**
-   * Pauses or unpauses the timer.
-   */
-  function pause() {
-    if (timer) {
-      clearInterval(timer);
-      timer = null;
-      document.getElementById("pauseButton").innerHTML = "\u23F5 Unpause";
-    } else {
-      startTimer();
-      document.getElementById("pauseButton").innerHTML = "\u23F8 Pause";
-    }
-  }
-
-</script>
-
-<style>
-  body {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    font-family: 'Young Serif', serif;
-  }
-
-  .container {
-    text-align: center;
-  }
-
-  h1 {
-    font-size: 26px; /* Optional: Adjust the font size as needed */
-  }
-
-  h2, button {
-    font-size: 24px; /* Optional: Adjust the font size as needed */
-  }
-
-  @media screen and (max-width: 768px) {
-    h1 {
-      font-size: 24px;
-    }
-
-    h2, button {
-      font-size: 18px;
-    }
-  }
-
-  .blue {
-    color: #3d3d93;
-  }
-
-  .red {
-    color: red;
-  }
-
-  .green {
-    color: darkgreen;
-  }
-</style>
 
 <body>
 <div class="container">

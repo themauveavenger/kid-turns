@@ -1,0 +1,43 @@
+ body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Young Serif', serif;
+  }
+
+  .container {
+    text-align: center;
+  }
+
+  h1 {
+    font-size: 26px; /* Optional: Adjust the font size as needed */
+  }
+
+  h2, button {
+    font-size: 24px; /* Optional: Adjust the font size as needed */
+  }
+
+  @media screen and (max-width: 768px) {
+    h1 {
+      font-size: 24px;
+    }
+
+    h2, button {
+      font-size: 18px;
+    }
+  }
+
+  .blue {
+    color: #3d3d93;
+  }
+
+  .red {
+    color: red;
+  }
+
+  .green {
+    color: darkgreen;
+  }
