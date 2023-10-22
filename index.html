@@ -1,3 +1,4 @@
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -9,7 +10,7 @@
   <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 
   <script type="text/javascript">
-    const kids = ["Terra", "Rose", "Iris"];
+    let kids = ["Terra", "Rose", "Iris"];
     let turnLengthSeconds = 60 * 10; // default is 10 minutes
 
     /* type {number} */
@@ -22,7 +23,7 @@
         turnOrderButtons[i].addEventListener("click", (e) => {
           const btn = e.target;
           document.getElementById("turnOrder").innerHTML = btn.innerHTML;
-          const kids = btn.innerHTML.split(", ");
+          kids = btn.innerHTML.split(", ");
           document.getElementById("kid").innerHTML = kids[0];
           document.getElementById("seconds").innerHTML = turnLengthSeconds.toString();
         });
@@ -32,9 +33,8 @@
     document.addEventListener("DOMContentLoaded", () => {
       // start the timer when page is loaded
       document.getElementById("seconds").innerHTML = turnLengthSeconds.toString();
-      startTimer();
-
       setupTurnOrderButtons();
+      startTimer();
     });
 
     function setKid() {
@@ -105,6 +105,9 @@
 </head>
 
 <body>
+<main>
+
+</main>
 <div class="container">
   <h1>Turn Order: <span class="green" id="turnOrder">Terra, Rose, Iris</span></h1>
 
@@ -129,6 +132,10 @@
   <button onclick="setTurnLength(60 * 5)">5 Minutes</button>
   <button onclick="setTurnLength(60 * 10)">10 Minutes</button>
   <button onclick="setTurnLength(60 * 15)">15 Minutes</button>
+
+  <h3>Links</h3>
+  <a href="pages/daily-turns.html">Daily Turn Order</a>
+  <a href="pages/random.html">Random Turn Order</a>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
