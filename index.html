@@ -86,6 +86,16 @@
     }
 
     /**
+     * changes the turn length
+     * @param {string} len number of minutes
+     */
+    function changeTurnLength(len) {
+      console.log("changeturnlength", len, typeof len);
+      turnLengthSeconds = parseInt(len) * 60;
+      document.getElementById("seconds").innerHTML = turnLengthSeconds.toString();
+    }
+
+    /**
      * Pauses or unpauses the timer.
      */
     function pause() {
@@ -128,10 +138,16 @@
 
   <button id="pauseButton" onclick="pause()">&#x23F8 Pause</button>
 
-  <h2>Turn Length &#x1F552</h2>
-  <button onclick="setTurnLength(60 * 5)">5 Minutes</button>
-  <button onclick="setTurnLength(60 * 10)">10 Minutes</button>
-  <button onclick="setTurnLength(60 * 15)">15 Minutes</button>
+  <div>
+    <h2>Change Turn Length in Minutes</h2>
+    <label for="turnLength">Turn Length &#x1F552</label>
+    <input onchange="changeTurnLength(this.value)" name="turnLength" id="turnLength" type="number" value="10"/>
+  </div>
+
+
+  <!--  <button onclick="setTurnLength(60 * 5)">5 Minutes</button>-->
+  <!--  <button onclick="setTurnLength(60 * 10)">10 Minutes</button>-->
+  <!--  <button onclick="setTurnLength(60 * 15)">15 Minutes</button>-->
 
   <h3>Links</h3>
   <a href="pages/daily-turns.html">Daily Turn Order</a>
