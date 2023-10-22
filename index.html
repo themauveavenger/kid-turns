@@ -58,6 +58,7 @@
         const currentSeconds = document.getElementById("seconds").innerHTML;
         // if the current number of seconds is 0, display 10 minutes
         if (currentSeconds === "0") {
+          playSound();
           document.getElementById("seconds").innerHTML = turnLengthSeconds.toString();
           setKid();
         } else {
@@ -109,6 +110,13 @@
       }
     }
 
+    /**
+     * play the hidden audio element on the page
+     */
+    function playSound() {
+      document.getElementById("dingSound").play();
+    }
+
   </script>
 
   <title>Turn Order</title>
@@ -144,14 +152,11 @@
     <input onchange="changeTurnLength(this.value)" name="turnLength" id="turnLength" type="number" value="10"/>
   </div>
 
-
-  <!--  <button onclick="setTurnLength(60 * 5)">5 Minutes</button>-->
-  <!--  <button onclick="setTurnLength(60 * 10)">10 Minutes</button>-->
-  <!--  <button onclick="setTurnLength(60 * 15)">15 Minutes</button>-->
-
   <h3>Links</h3>
   <a href="pages/daily-turns.html">Daily Turn Order</a>
   <a href="pages/random.html">Random Turn Order</a>
+
+  <audio id="dingSound" hidden src="sounds/ding-sound-effect_2.mp3"></audio>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
