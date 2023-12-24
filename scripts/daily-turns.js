@@ -1,10 +1,20 @@
 function dailyTurn() {
   const DateTime = luxon.DateTime;
 
+  const hoursBetweenTurns = 24;
+
+  /**
+   * Returns a DateTime object that represents today at 6 AM Local Time.
+   * @return {luxon.DateTime}
+   */
   const getToday = () => {
     return DateTime.local().set({ hour: 6, minute: 0, second: 0, millisecond: 0 });
   }
 
+  /**
+   * Possible turn orders with different people starting and ending.
+   * @type {string[][]}
+   */
   const turnOrders = [
     ["Iris", "Terra", "Rose"],
     ["Rose", "Iris", "Terra"],
@@ -22,11 +32,11 @@ function dailyTurn() {
   console.log("hoursDifference", hoursDifference);
 
   // Calculate the number of 12-hour intervals
-  const twelveHourIntervals = Math.floor(hoursDifference / 12);
-  console.log("twelveHourIntervals", twelveHourIntervals);
+  const intervals = Math.floor(hoursDifference / hoursBetweenTurns);
+  console.log("twelveHourIntervals", intervals);
 
   // find the remainder of hoursDifference / 6
-  const remainder = twelveHourIntervals % 6;
+  const remainder = intervals % 6;
 
   // use the remainder to pick the correct turn order
   console.log("remainder", remainder);
@@ -69,14 +79,14 @@ function dailyTurn() {
 
   let d = getToday();
   lastThreeTurns.forEach((turn) => {
-    d = d.minus({ hours: 12 });
+    d = d.minus({ hours: hoursBetweenTurns });
     const turnStr = d.toFormat("cccc t") + " -- " + turn.join(", ").trim();
     document.getElementById("lastTurns").innerHTML += `<li>${turnStr}</li>`;
   });
 
   d = getToday();
   nextThreeTurns.forEach((turn) => {
-    d = d.plus({ hours: 12 });
+    d = d.plus({ hours: hoursBetweenTurns });
     const turnStr = d.toFormat("cccc t") + " -- " + turn.join(", ").trim();
 
     document.getElementById("nextTurns").innerHTML += `<li>${turnStr}</li>`;
