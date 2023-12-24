@@ -1,17 +1,21 @@
 function dailyTurn() {
   const DateTime = luxon.DateTime;
 
+  const getToday = () => {
+    return DateTime.local().set({ hour: 6, minute: 0, second: 0, millisecond: 0 });
+  }
+
   const turnOrders = [
-    ["Rose", "Iris", "Terra"],
-    ["Rose", "Terra", "Iris"],
-    ["Iris", "Rose", "Terra"],
     ["Iris", "Terra", "Rose"],
+    ["Rose", "Iris", "Terra"],
     ["Terra", "Rose", "Iris"],
-    ["Terra", "Iris", "Rose"]
+    ["Iris", "Rose", "Terra"],
+    ["Terra", "Iris", "Rose"],
+    ["Rose", "Terra", "Iris"]
   ];
 
   const startDay = DateTime.fromISO("2023-10-22");
-  const now = DateTime.local();
+  const now = getToday();
 
   // Calculate the difference in hours between startDay and now
   const hoursDifference = now.diff(startDay, "hours").as("hours");
@@ -29,7 +33,52 @@ function dailyTurn() {
 
   const turnOrder = turnOrders[remainder];
 
+  // find the last three turn orders
+  /** @type {string[][]} */
+  let lastThreeTurns = [];
+  let counter = remainder - 1;
+  while (lastThreeTurns.length < 3) {
+    if (counter < 0) {
+      counter = turnOrders.length;
+    }
+
+    lastThreeTurns.push(turnOrders[counter]);
+    counter -= 1;
+  }
+
+  // find the next three turn orders
+  counter = remainder + 1;
+
+  /** @type {string[][]} */
+  let nextThreeTurns = [];
+  while (nextThreeTurns.length < 3) {
+    if (counter > turnOrders.length - 1) {
+      counter = 0
+    }
+
+    nextThreeTurns.push(turnOrders[counter]);
+    counter += 1;
+  }
+
   turnOrder.forEach((kid) => {
     document.getElementById("turnOrderList").innerHTML += `<li>${kid}</li>`;
+  });
+
+  console.log(nextThreeTurns);
+  console.log(lastThreeTurns);
+
+  let d = getToday();
+  lastThreeTurns.forEach((turn) => {
+    d = d.minus({ hours: 12 });
+    const turnStr = d.toFormat("cccc t") + " -- " + turn.join(", ").trim();
+    document.getElementById("lastTurns").innerHTML += `<li>${turnStr}</li>`;
+  });
+
+  d = getToday();
+  nextThreeTurns.forEach((turn) => {
+    d = d.plus({ hours: 12 });
+    const turnStr = d.toFormat("cccc t") + " -- " + turn.join(", ").trim();
+
+    document.getElementById("nextTurns").innerHTML += `<li>${turnStr}</li>`;
   });
 }
