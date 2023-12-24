@@ -39,7 +39,7 @@ function dailyTurn() {
   let counter = remainder - 1;
   while (lastThreeTurns.length < 3) {
     if (counter < 0) {
-      counter = turnOrders.length;
+      counter = turnOrders.length - 1 ;
     }
 
     lastThreeTurns.push(turnOrders[counter]);
